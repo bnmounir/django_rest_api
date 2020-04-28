@@ -1,6 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, viewsets
 
 from profile_app import serializers
 # Create your views here.
@@ -42,3 +42,44 @@ class HelloApiView(APIView):
     def delete(self, request, pk=None):
         '''handles delete an objects'''
         return Response({'method': 'Delete'})
+
+
+class HelloViewSet(viewsets.ViewSet):
+    ''' test api view '''
+    serializer_class = serializers.HelloSerializer
+
+    def list(self, request):
+        ''' return hello message '''
+
+        a_viewset = ['view one', 'view two', 'view three']
+
+        return Response({'message': 'Hello!', 'a_viewset': a_viewset})
+
+    def create(self, request):
+        ''' create message '''
+
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+            name = serializer.validated_data.get('name')
+            message = f'Hello {name}!'
+            return Response({'message': message})
+        else:
+            return Response(serializer.errors,
+                            status=status.HTTP_400_BAD_REQUEST)
+
+    def retrive(self, request, pk=None):
+        ''' retrive an object '''
+        return Response({'http_method': 'retrive  GET'})
+
+    def update(self, request, pk=None):
+        ''' retrive an object '''
+        return Response({'http_method': 'update put style'})
+
+    def partial_update(self, request, pk=None):
+        ''' retrive an object '''
+        return Response({'http_method': 'update patch style'})
+
+    def destroy(self, request, pk=None):
+        ''' retrive an object '''
+        return Response({'http_method': 'destroy delete style'})
