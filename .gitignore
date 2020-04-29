@@ -121,6 +121,7 @@ dmypy.json
 
 ### Python Patch ###
 .venv/
+venv/
 
 ### Vagrant ###
 # General
